@@ -3,9 +3,12 @@ import {
   Controller, 
   Delete, 
   Get, 
+  HttpCode, 
+  HttpStatus, 
   Param, 
   Post, 
-  Put 
+  Put, 
+  Res
 } from '@nestjs/common';
 
 @Controller('products')
@@ -21,8 +24,12 @@ export class ProductsController {
   }
 
   @Get(':id')
-  find(@Param('id') id: number) {
-    return `El producto que quieres recibir es ${id}`;
+  find(@Res() response, @Param('id') id: number) {
+    if(id < 100) {
+      return response.status(HttpStatus.OK).send(`El producto que quieres recibir es ${id}`);
+    } else {
+      return response.status(HttpStatus.NOT_FOUND).send('No he encontrado ese producto');
+    }
   }
 
   // @Post()
@@ -31,6 +38,7 @@ export class ProductsController {
   // }
 
   @Post()
+  @HttpCode(HttpStatus.NO_CONTENT)
   create(
     @Body('name') name: string, 
     @Body('description') description: string
