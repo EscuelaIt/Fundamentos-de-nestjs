@@ -1,4 +1,5 @@
 import { 
+  BadRequestException,
   Body, 
   Controller, 
   Delete, 
@@ -57,6 +58,7 @@ export class ProductsController {
 
   @Delete(':id')
   remove(@Param('id') id: number) {
+    throw new BadRequestException('No se puede hacer delete');
     return `Estás borrando el producto ${id}`;
   }
 }
