@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Product } from './product.interface';
 
 @Injectable()
 export class ProductsService {
-  private products = [
+  private products: Product[] = [
     {
       id: 1,
       name: 'Vela aromática',
@@ -15,15 +16,19 @@ export class ProductsService {
     }
   ];
 
-  getAll() {
+  getAll(): Product[] {
     return this.products;
   }
 
-  getId(id: number) {
-    return this.products.find((item) => item.id == id);
+  getId(id: number): Product {
+    let product = this.products.find((item) => item.id == id);
+    if(product) {
+      return product;
+    }
+    throw new NotFoundException('No puedo encontrar ese producto');
   }
 
-  insert(body: any) {
+  insert(body: any): Product {
     this.products = [
       ...this.products,
       {
@@ -35,8 +40,8 @@ export class ProductsService {
     return this.getId(this.lastId());
   }
 
-  update(id: number, body: any) {
-    let product = {
+  update(id: number, body: any): Product {
+    let product: Product = {
       id,
       name: body.name,
       description: body.description,
@@ -47,7 +52,7 @@ export class ProductsService {
     return this.getId(id);
   }
 
-  delete(id: number) {
+  delete(id: number): void {
     this.products = this.products.filter((item) => item.id != id);
   }
 
