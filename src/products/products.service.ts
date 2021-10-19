@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './product.interface';
 import { ProductDto } from './dto/product.dto';
+import { ProductPatchDto } from './dto/product-patch.dto';
 
 @Injectable()
 export class ProductsService {
@@ -51,10 +52,23 @@ export class ProductsService {
       description: body.description,
       stock: body.stock,
     }
+    return this.updateObject(id, product);
+  }
+
+  private updateObject(id: number, product: Product) {
     this.products = this.products.map((item) => {
       return item.id == id ? product : item;
     });
     return this.getId(id);
+  }
+
+  patch(id: number, body: ProductPatchDto): Product {
+    const previousProduct = this.getId(id);
+    const newProduct = {
+      ...previousProduct,
+      ...body,
+    }
+    return this.updateObject(id, newProduct);
   }
 
   delete(id: number): void {
