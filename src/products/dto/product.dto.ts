@@ -1,4 +1,4 @@
-import { IsInt, IsString, Min } from "class-validator";
+import { IsInt, IsString, Length, Min } from "class-validator";
 
 export class ProductDto {
   @IsString({
@@ -7,6 +7,7 @@ export class ProductDto {
   name: string;
 
   @IsString()
+  @Length(10, 50)
   description: string;
 
   @IsInt()

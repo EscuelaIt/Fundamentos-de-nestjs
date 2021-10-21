@@ -11,12 +11,14 @@ import {
   Patch, 
   Post, 
   Put, 
-  Res
+  Res,
+  UsePipes
 } from '@nestjs/common';
 import { Product } from './product.interface';
 import { ProductsService } from './products.service';
 import { ProductDto } from './dto/product.dto';
 import { ProductPatchDto } from './dto/product-patch.dto';
+import { ValidationPipe } from '@nestjs/common';
 
 @Controller('products')
 export class ProductsController {
@@ -34,15 +36,17 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() body: ProductDto): Product {
+  // @UsePipes(new ValidationPipe())
+  async create(@Body() body: ProductDto): Promise<Product> {
     return this.productsService.insert(body);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: number, 
     @Body() body: ProductDto
-  ): Product {
+  ): Promise<Product> {
+    console.log(body);
     return this.productsService.update(id, body);
   }
 
