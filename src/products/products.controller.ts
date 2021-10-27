@@ -26,17 +26,16 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
   @Get()
-  getAll(): Product[] {
+  getAll(): Promise<Product[]> {
     return this.productsService.getAll();
   }
 
   @Get(':id')
-  find(@Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number): Product {
+  find(@Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number) {
     return this.productsService.getId(id);
   }
 
   @Post()
-  // @UsePipes(new ValidationPipe())
   async create(@Body() body: ProductDto): Promise<Product> {
     return this.productsService.insert(body);
   }
@@ -46,22 +45,20 @@ export class ProductsController {
     @Param('id') id: number, 
     @Body() body: ProductDto
   ): Promise<Product> {
-    console.log(body);
     return this.productsService.update(id, body);
   }
 
   @Patch(':id')
-  patch(
+  async patch(
     @Param('id') id: number,
     @Body() body: ProductPatchDto
   ) {
-    return this.productsService.patch(id, body);
+    return this.productsService.update(id, body);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: number): string {
-    this.productsService.delete(id);
-    return `Borrado`;
+  async remove(@Param('id') id: number) {
+    return this.productsService.delete(id);
   }
 }
