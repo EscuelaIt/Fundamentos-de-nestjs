@@ -15,7 +15,6 @@ import { TagsModule } from './tags/tags.module';
     password: 'secret',
     database: 'curso_nest',
     retryDelay: 3000,
-    //entities: [Product]
     autoLoadEntities: true,
     synchronize: true,
   })],
