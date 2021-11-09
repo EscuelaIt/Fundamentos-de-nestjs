@@ -21,11 +21,14 @@ import { ProductDto } from './dto/product.dto';
 import { ProductPatchDto } from './dto/product-patch.dto';
 import { ValidationPipe } from '@nestjs/common';
 import { QueryProductsDto } from './dto/query-products.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('products')
 export class ProductsController {
 
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(
+    private readonly productsService: ProductsService
+  ) { }
 
   @Get()
   getAll(@Query() query: QueryProductsDto) {

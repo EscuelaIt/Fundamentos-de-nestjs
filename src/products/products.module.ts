@@ -9,7 +9,8 @@ import { ReviewService } from './review/review.service';
 import { Size } from './entities/size.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, Review, Size])],
+  imports: [
+    TypeOrmModule.forFeature([Product, Review, Size])],
   controllers: [ProductsController, ReviewController],
   providers: [ProductsService, ReviewService],
 })
