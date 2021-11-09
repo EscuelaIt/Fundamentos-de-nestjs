@@ -11,6 +11,7 @@ import {
   Patch, 
   Post, 
   Put, 
+  Query, 
   Res,
   UsePipes
 } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { ProductsService } from './products.service';
 import { ProductDto } from './dto/product.dto';
 import { ProductPatchDto } from './dto/product-patch.dto';
 import { ValidationPipe } from '@nestjs/common';
+import { QueryProductsDto } from './dto/query-products.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -26,8 +28,14 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
   @Get()
-  getAll(): Promise<Product[]> {
-    return this.productsService.getAll();
+  getAll(@Query() query: QueryProductsDto) {
+    const defaultQuery = {
+      limit: 10,
+      order: 'name',
+      query: '',
+    }
+    query = { ...defaultQuery, ...query };
+    return this.productsService.getAll(query);
   }
 
   @Get(':id')

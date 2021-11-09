@@ -2,9 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './entities/product.entity';
 import { ProductDto } from './dto/product.dto';
 import { ProductPatchDto } from './dto/product-patch.dto';
-import { Repository } from 'typeorm';
+import { Like, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Size } from './entities/size.entity';
+import { QueryProductsDto } from './dto/query-products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -16,8 +17,17 @@ export class ProductsService {
     private sizeRepository: Repository<Size>
   ) { }
 
-  getAll(): Promise<Product[]> {
-    return this.productRepository.find();
+  getAll(query: QueryProductsDto): Promise<Product[]> {
+    return this.productRepository.find({
+      take: query.limit,
+      where: [
+        { name: Like(`%${query.query}%`) },
+        { description: Like(`%${query.query}%`) },
+      ],
+      order: {
+        [query.order]: 'ASC',
+      }
+    });
   }
 
   async getId(id: number): Promise<Product> {
