@@ -8,7 +8,7 @@ import { TagsModule } from './tags/tags.module';
 @Module({
   imports: [ProductsModule, TagsModule, TypeOrmModule.forRoot({
     type: 'mysql',
-    host: '192.168.10.10',
+    host: 'localhost',
     port: 3306,
     username: 'nest',
     password: 'secret',
