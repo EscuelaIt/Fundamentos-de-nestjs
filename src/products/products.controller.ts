@@ -10,6 +10,7 @@ import {
 
 @Controller('products')
 export class ProductsController {
+  
   @Get()
   getAll() {
     return 'Este es el listado de productos';
@@ -25,13 +26,13 @@ export class ProductsController {
     return `El producto que quieres recibir es ${id}`;
   }
 
-  // @Post()
-  // create(@Body() body) {
-  //   return `Estás creando un producto ${body.name} con el texto ${body.description}`;
-  // }
-
   @Post()
-  create(
+  create(@Body() body) {
+    return `Estás creando un producto ${body.name} con el texto ${body.description}`;
+  }
+
+  @Post('create2')
+  createDes(
     @Body('name') name: string, 
     @Body('description') description: string
   ) {
